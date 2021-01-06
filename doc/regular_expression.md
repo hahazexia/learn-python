@@ -160,7 +160,135 @@ re1.match('caaat')
 re1.search('caat')
 re1.findall('caatcaat')
 re1.finditer('caatcaat')
+
+# 或者像下面这样调用
+
+re.match('ca{2}t', 'caaat')
+re.search('ca{2}t', 'caat')
+re.findall('ca{2}t', 'caatcaat')
+re.finditer('ca{2}t', 'caatcaat')
 ```
 
+使用 `re.compile` 生成正则对象后再调用各种方法，和直接调用 `re` 模块上的方法还是有一些区别的。先看看直接调用 `re` 模块上的方法。
+
+* `re.match(pattern, string, flags=0)`
+
+如果 `string` 开始的0或者多个字符匹配到了`pattern`，就返回一个相应的 `匹配对象` 。 如果没有匹配，就返回 None ；注意它跟零长度匹配是不同的。`re.match` 方法一定会从字符串的开头开始匹配，相当于在正则起初位置强制加了 `^` 元字符。
+
+```python
+import re
+
+re.match('ca{2}t', 'bcaat')
+# 返回 None 因为 re.match 从开头开始匹配，所以字符串 'bcaat' 不符合要求，返回 None
+
+re.match('ca{2}t', 'caat')
+# <re.Match object; span=(0, 4), match='caat'>
+```
+
+* `re.search(pattern, string, flags=0)`
+
+查找 `string` 的所有位置，返回第一个匹配 `pattern` 的`匹配对象`。<br>
+⚠注意：`re.search` 和 `re.match` 的区别是，默认情况下`re.match`一定会从头开始匹配一个字符串，而 `re.search` 默认不会从头匹配。
+
+```python
+import re
+
+re.search('ca{2}t', 'bcaat')
+# <re.Match object; span=(1, 5), match='caat'>   默认情况下 re.search 不需要从开头匹配，所以只要字符串中有符合模式的情况，就会返回匹配对象
+
+re.search('^ca{2}t', 'bcaat')
+# 返回 None  因为正则加了 ^ 元字符，所以会从开头开始匹配， 这时候字符串 'bcaat' 就不符合要求了
+```
+
+* `re.findall(pattern, string, flags=0)`
+
+对 `string` 返回一个不重复的 `pattern` 的匹配列表， `string` 从左到右进行扫描，匹配按找到的顺序返回。如果`pattern`里存在一到多个`组`，就返回一个`组合列表`。如果`pattern`里有超过一个组合的话，就返回一个`元组`的列表。
+
+```python
+import re
+
+re.findall('a+b', 'aaab  b  aaaaab  ab')
+# ['aaab', 'aaaaab', 'ab']
+
+re.findall('(a+)b', 'aaab  b  aaaaab  ab')
+# ['aaa', 'aaaaa', 'a'] 只有一个()分组，findall返回的列表的每个元素是()分组捕获到的结果
+
+re.findall('(a+)(b)', 'aaab  b  aaaaab  ab')
+# [('aaa', 'b'), ('aaaaa', 'b'), ('a', 'b')] 有多个()分组，findall返回的列表的每个元素是每次完整匹配的多个()分组匹配结果组成的元组
+
+re.findall('((a+)b)', 'aaab  b  aaaaab  ab')
+# [('aaab', 'aaa'), ('aaaaab', 'aaaaa'), ('ab', 'a')] 同上
+```
+
+* `re.finditer(pattern, string, flags=0)`
+
+`pattern` 在 `string` 里所有的非重复匹配，返回为一个迭代器 `iterator` 保存了 `匹配对象` 。 `string` 从左到右扫描，匹配按顺序排列。空匹配也包含在结果里。
+
+```python
+import re
+
+iterator1 = re.finditer('a+b', 'aaab  b  aaaaab  ab')
+for i in iterator1:
+    print(i)
+'''
+<re.Match object; span=(0, 4), match='aaab'>
+<re.Match object; span=(9, 15), match='aaaaab'>
+<re.Match object; span=(17, 19), match='ab'>
+'''
+
+iterator2 = re.finditer('(a+)b', 'aaab  b  aaaaab  ab')
+for i in iterator2:
+    print(i)
+    print(i.group())
+    print(i.group(0))
+    print(i.group(1))
+
+'''
+<re.Match object; span=(0, 4), match='aaab'>
+aaab
+aaab
+aaa
+<re.Match object; span=(9, 15), match='aaaaab'>
+aaaaab
+aaaaab
+aaaaa
+<re.Match object; span=(17, 19), match='ab'>
+ab
+ab
+a
+'''
+```
+
+***
+
+现在来看看，使用 `re.compile` 编译正则后，使用正则对象调用方法是什么样的，先看看 `re.compile`
+
+* `re.compile(pattern, flags=0)`
+
+`re.compile` 将正则表达式的字符串编译成一个`正则表达式对象`。通过这个`正则对象`可以调用 `match()` 或者 `search()` 等方法。
+
+* `Pattern.search(string[, pos[, endpos]])`
+
+这样可以看出和直接调用 `re.search` 的区别了，使用正则对象调用 `search()` 方法的时候，多了两个参数，匹配的起始位置 `pos` 和 `endpos`。
+可选的第二个参数 `pos` 给出了字符串中开始搜索的位置索引；默认为 `0`。可选参数 `endpos` 限定了字符串搜索的结束；它假定字符串长度到 `endpos` ， 所以只有从 `pos` 到 `endpos - 1` 的字符会被匹配。如果 `endpos` 小于 `pos`，就不会有匹配产生。
+
+```python
+pattern = re.compile('d')
+pattern.search('dog')
+<re.Match object; span=(0, 1), match='d'>
+pattern.search('dog', 1)  # None 从字符串索引1的位置开始匹配，所以没有匹配到索引0位置的字母d
+
+pattern = re.compile('^d')
+pattern.search('dog', 1) # None
+```
+
+* `Pattern.match(string[, pos[, endpos]])`
+`pos` 和 `endpos` 参数的含义同上
+
+* `Pattern.findall(string[, pos[, endpos]])`
+`pos` 和 `endpos` 参数的含义同上
+
+* `Pattern.finditer(string[, pos[, endpos]])`
+`pos` 和 `endpos` 参数的含义同上
 
 
