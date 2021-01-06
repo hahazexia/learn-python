@@ -291,4 +291,36 @@ pattern.search('dog', 1) # None
 * `Pattern.finditer(string[, pos[, endpos]])`
 `pos` 和 `endpos` 参数的含义同上
 
+### 匹配对象
 
+调用 `match()` 和 `search()`后，如果匹配成功，则会返回`匹配对象`，这个对象有什么属性和方法呢？
+
+* `group()` 返回正则匹配的字符串
+* `start()` 返回匹配的开始位置
+* `end()` 返回匹配的结束位置
+* `span()` 返回包含匹配 (start, end) 位置的元组
+
+```python
+import re
+
+re1 = re.compile('a+')
+result = re1.search('aaabaaacaaabaaa')
+# <re.Match object; span=(0, 3), match='aaa'>
+
+result.group() # 'aaa'
+result.group(0) # 'aaa'
+result.start() # 0
+result.end() # 3
+result.span() # (0, 3)
+
+re1 = re.compile('a+(b)')
+result = re1.search('aaabaaacaaabaaa')
+# <re.Match object; span=(0, 4), match='aaab'>
+
+result.group() # 'aaab'
+result.group(0) # 'aaab'
+result.group(1) # 'b'
+result.start() # 0
+result.end() # 4
+result.span() # (0, 4)
+```
