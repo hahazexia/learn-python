@@ -69,15 +69,6 @@ re1 = re.compile('[\d,.]') # 匹配所有数字和逗号还有点 等价于 '[0-
 
 * `.` 点号，含义是匹配除了换行符之外的任何字符。python 中有一个 `re.DOTALL` 模式，如果开启了，则 `.` 点号将匹配任何字符，包括换行符。
 
-* `^` 代表在字符串的开头匹配，`$` 代表在字符串的结尾匹配。python 中有一个`re.MULTILINE` 模式，如果开启了 `MULTILINE` 多行模式，那么 `^` 匹配字符串开始位置以及 `/n`换行符 或 `/r`回车符 之后的位置，而 `$` 匹配字符串结束位置以及 `/n`换行符 或 `/r`回车符 之前的位置。
-
-例如：
-
-```python
-import re
-re1 = re.compile('^1[345789]\d{9}$') # 匹配11位手机号码 从字符串开头匹配到结尾
-```
-
 ### 量词
 
 有几个元字符的含义是表示某个模式或字符需要重复多少次，这几个元字符就是量词。
@@ -357,4 +348,141 @@ charref = re.compile(r"""
 ```
 
 ### 更多元字符
+
+这里讨论的元字符是一些`零宽度断言` (zero-width assertions)。就像它的名字一样，是一种零宽度的匹配，它匹配到的内容不会保存到匹配结果中去，最终匹配结果只是一个位置而已。
+
+* `|` 或者的意思。`A|B` 将匹配与 `A` 或 `B` 符合的字符串。
+
+```python
+# 这是 stackoverflow 上查到的有网友提供的匹配 url 的正则表达式
+import re
+
+urlReg = re.compile('(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]')
+
+```
+
+注意上面这个例子里，`(https?|ftp|file)` 这里就代表匹配 `http` 或 `https` 或 `ftp` 或 `file`。
+
+
+* `^` 代表在字符串的开头匹配，`$` 代表在字符串的结尾匹配。python 中有一个`re.MULTILINE` 模式，如果开启了 `MULTILINE` 多行模式，那么 `^` 匹配字符串开始位置以及 `/n`换行符 或 `/r`回车符 之后的位置，简言之就是`每一行的开头`；而 `$` 匹配字符串结束位置以及 `/n`换行符 或 `/r`回车符 之前的位置，简言之就是`每一行的结尾`。
+
+例如：
+
+```python
+import re
+re1 = re.compile('^1[345789]\d{9}$') # 匹配11位手机号码 从字符串开头匹配到结尾
+```
+
+* `\A` 仅匹配字符串开始位置。没有开启 `re.MULTILINE` 多行模式时，`\A` 和 `^` 是等价的。开启多行模式后，`\A` 仍然只匹配字符串开头，而 `^` 匹配`每一行`的开头。
+
+* `\Z` 只匹配字符串尾。在 `re.M` 多行模式下和 `\A` 的效果类似，仍然只匹配字符串结尾。
+
+* `\b` 字边界。 仅在单词的开头或结尾处匹配。英文单词是以空格或者其他符号分隔开的，所以`\b`就是这个意思。
+
+```python
+p = re.compile(r'\bclass\b')
+print(p.search('no class at all'))
+# <re.Match object; span=(3, 8), match='class'>
+print(p.search('the declassified algorithm'))
+# None
+print(p.search('one subclass is'))
+# None
+```
+⚠注意：在 python 的普通字符串中，`\b` 是转义字符，代表退格符（Backspace）。如果想在正则中作为字边界使用，需要使用`原始字符串(raw strings)`，即上面的例子中在字符串前加字母 `r`，这样字符串将不会对反斜杠进行转义。
+
+* `\B` 这与 `\b` 相反，仅在当前位置不在字边界时才匹配。
+
+### 分组（捕获分组）
+
+正则表达式可以分成子组来匹配字符串，这样匹配结果就能捕获到不同的分组内容，匹配结果对象可以通过 `group()` 方法获取不同的分组。这其实就是`捕获分组`。
+
+```python
+import re
+
+re1 = re.compile('(\d{4})-(\d{1,2})-(\d{1,2})')
+result = re1.search('今天的日期是2021-1-9')
+
+result.group()
+# '2021-1-9'
+result.group(0)
+# '2021-1-9'
+result.group(1)
+# '2021'
+result.group(2)
+# '1'
+result.group(3)
+# '9'
+result.groups()
+# ('2021', '1', '9')
+```
+
+从上面的例子可以看出，获取到匹配结果对象后，调用 `group()` 方法，不传递参数或者传递参数 `0`，则返回匹配到的整个结果字符串，如果依次传递 `1` `2` `3` …………，则返回的就是第 `1` `2` `3` 个分组的内容；如果调用 `groups()` ，则返回所有分组内容组成的元组。<br>
+
+当我们学会了捕获分组之后，就可以使用`反向引用`来在正则中继续匹配之前捕获的分组。使用 `\1` 这样的形式，也就是 `\number`，反斜杠加数字，数字代表了匹配和`第几个`分组内容完全相同的字符串。
+
+```python
+import re
+
+re1 = re.compile(r'([a-zA-Z]+)\s+\1')
+result = re1.findall('i i am a coder, i like like coding and my my friend like sports !')
+result
+# ['i', 'like', 'my']
+```
+
+上面例子通过 `\1` 反向引用了它之前的捕获分组 `([a-zA-Z]+)`，这样就找到了一句话中连续重复的单词。<br>
+
+⚠注意：python 在普通字符串中 `\1` 代表转义字符八进制数字 1，所以想要在正则中使用反向引用，需要使用`原始字符串(raw strings)`，即上面的例子中在字符串前加字母 `r`，这样字符串将不会对反斜杠进行转义。
+
+### 非捕获分组 命名分组
+
+有时候你想使用分组来表示正则的一部分，但是并不需要捕获这个分组的内容，那么就可以使用 `(?:)` 非捕获分组。
+
+```python
+import re
+
+m = re.match('([abc]+)', 'abc')
+m.groups() # ('abc',)
+
+m = re.match('(?:[abc]+)', 'abc')
+m.groups() # ()
+```
+
+上面的例子可以看到 `(?:)` 只匹配了分组，并没有捕获分组的内容。<br>
+
+当我们使用捕获分组的时候，取出分组内容需要调用匹配对象的 `group()` 方法，参数为数字，这样获取起来很麻烦，毕竟使用数字不是很清晰明了，所以可以使用更方便的`命名分组`，也叫具名组。命名组的语法是Python特定的扩展之一: `(?P<name>)`。
+
+```python
+import re
+
+m = re.match('(?P<first>\w+) (?P<last>\w+)', 'Jane Doe')
+
+m.group(1) # 'Jane'
+m.group('first') # 'Jane'
+
+m.group(2) # 'Doe'
+m.group('last') # 'Doe'
+```
+
+从上面的例子可以看出使用 `(?P<name>)` 命名组之后，既可以使用数字参数来获取分组内容，也可以使用自定义的组名。<br>
+
+并且还有 `groupdict()` 方法将命名组提取为字典格式：
+
+```python
+import re
+
+m = re.match('(?P<first>\w+) (?P<last>\w+)', 'Jane Doe')
+m.groupdict()
+# {'first': 'Jane', 'last': 'Doe'}
+```
+
+对于和捕获分组对应的反向引用，使用 `\1` 匹配和捕获分组内容相同的字符，而对于命名分组，也有对应的 `(?P=name)` 再次匹配对应命名分组的内容：
+
+```python
+import re
+
+re1 = re.compile('(?P<repeat>[a-zA-Z]+)\s+(?P=repeat)')
+result = re1.findall('i i am a coder, i like like coding and my my friend like sports !')
+result
+# ['i', 'like', 'my']
+```
 
