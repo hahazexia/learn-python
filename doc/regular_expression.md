@@ -56,8 +56,8 @@ re1 = re.compile('\d') # 匹配任何十进制数字；这等价于类 [0-9]
 re2 = re.compile('\D') # 匹配任何非数字字符；这等价于类 [^0-9]
 re3 = re.compile('\s') # 匹配任何空白字符；这等价于类 [ \t\n\r\f\v] 空格，\t横向制表符，\n换行符，\r回车符，\f换页符，\v纵向制表符
 re4 = re.compile('\S') # 匹配任何非空白字符；这相当于类 [^ \t\n\r\f\v]
-re5 = re.compile('\w') # 匹配任何字母与数字字符；这相当于类 [a-zA-Z0-9_]
-re6 = re.compile('\W') # 匹配任何非字母与数字字符；这相当于类 [^a-zA-Z0-9_]
+re5 = re.compile('\w') # 匹配任何字母与数字字符与下划线；这相当于类 [a-zA-Z0-9_]
+re6 = re.compile('\W') # 匹配任何非字母与非数字字符与非下划线；这相当于类 [^a-zA-Z0-9_]
 ```
 
 这些特殊的字符集合可以包含在`[]`中，例如：
@@ -555,4 +555,26 @@ re1 = re.compile('(?<!\$)\d+')
 re1.search('it’s is worth about €90')
 # <re.Match object; span=(21, 23), match='90'>
 ```
+
+### 分割字符串 替换字符串
+
+* `pattern.split(string[, maxsplit=0])` 或 `re.split(pattern, string, maxsplit=0, flags=0)`
+
+ 在每一次 `pattern` 匹配处将字符串分割，结果返回分割的字符串组成的列表。如果正则中有`捕获分组`，则分组的内容也将在结果列表里。`maxsplit` 是最大分割次数。分割结束后，剩余的字符串将是列表的最后一个元素。
+
+ ```python
+import re
+
+re.split(r'\W+', 'Words, words, words.')
+# ['Words', 'words', 'words', '']
+
+re.split(r'(\W+)', 'Words, words, words.')
+# ['Words', ', ', 'words', ', ', 'words', '.', '']
+
+re.split(r'\W+', 'Words, words, words.', 1)
+# ['Words', 'words, words.']
+
+re.split('[a-f]+', '0a3B9', flags=re.IGNORECASE)
+# ['0', '3', '9']
+ ```
 
