@@ -486,3 +486,73 @@ result
 # ['i', 'like', 'my']
 ```
 
+### 先行断言 先行否定断言 后行断言 后行否定断言
+
+* `(?=…)` `先行断言（lookahead assertion）` 
+
+它的意思是`?=`后面包含的正则表达式在当前位置匹配成功了，才会去继续往后匹配，否则匹配就不再进行。举个例子，如果需要匹配 x 后面一定有 y，那么使用`先行断言`就需要这么写：'x(?=y)'，匹配结果里只有x，而不会包含y。
+
+```python
+import re
+
+re1 = re.compile('x(?=y)')
+
+re1.search('xssssxyddd')
+# <re.Match object; span=(5, 6), match='x'>
+
+re1.search('xssssxddd')
+# None
+```
+
+有了`先行断言`，我们就可以使用它来做一些预判。比如现在有一个匹配密码的需求：8-16位数字字母组合，可输入特殊字符。这个需求的意思是必须含有字母和数字，但是特殊字符可选。
+
+```python
+import re
+
+passwordReg = re.compile('^((?=.*[a-zA-Z])(?=.*\d)|(?=.*\d)(?=.*[a-zA-Z]))[a-zA-Z\d#@!~%^&*]{8,16}$')
+
+```
+
+上面的正则使用了`先行断言`来预判后面的8-16位字符中必定会含有数字和字母，而其他特殊字符是可选的，这样就达到了要求。
+
+* `(?!…)` `先行否定断言（negative lookahead assertion）`
+
+它的意思和`先行断言`相反，如果`?!`后面的正则在当前位置匹配成功了，那么就不再继续往后匹配。举个例子，如果需要匹配 x 后面一定没有 y，那么就使用`先行否定断言`这么写：'x(?!y)'。<br>
+
+比如有个需求是匹配所有不在百分号之前的数字：
+
+```python
+import re
+
+re1 = re.compile('\d+(?!\d*%)')
+re1.findall('There are 40 people. 20% of them are from other country. They are all between 25 to 35 years old.')
+# ['40', '25', '35']
+
+```
+
+* `(?<=…)` `后行断言（lookbehind assertion）`
+
+它与正常的正则匹配的顺序不一样，它会先匹配`(?<=…)`之后的内容，如果匹配成功，再回来看当前位置之前是否含有后行断言指定的内容。举个例子，如果想匹配美元符后面的数字，就这么写：'(?<=\$)\d+'
+
+```python
+import re
+
+re1 = re.compile('(?<=\$)\d+')
+
+re1.search('Benjamin Franklin is on the $100 bill')
+# <re.Match object; span=(29, 32), match='100'>
+```
+
+* `(?<!…)` `后行否定断言（negative lookbehind assertion ）`
+
+它和`后行断言`刚好相反，它会先匹配`(?<!…)`之后的内容，如果匹配成功，再回来看当前位置之前是否没有指定的内容。举个例子，如果想匹配除了美元符之外其他符号后面的数字，就这么写：`(?<!\$)\d+`
+
+```python
+import re
+
+re1 = re.compile('(?<!\$)\d+')
+
+re1.search('it’s is worth about €90')
+# <re.Match object; span=(21, 23), match='90'>
+```
+
