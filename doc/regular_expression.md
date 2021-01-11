@@ -578,3 +578,81 @@ re.split('[a-f]+', '0a3B9', flags=re.IGNORECASE)
 # ['0', '3', '9']
  ```
 
+⚠注意：如果正则匹配到了字符串的开头或结尾，那么列表的开头或结尾就会有一个空字符串。
+
+```python
+import re
+
+re.split('\W+', '...words, Words...')
+# ['', 'words', 'Words', '']
+```
+
+pattern的空匹配将分开字符串，但只在不相临的状况生效。
+
+```python
+re.split(r'\b', 'Words, words, words.')
+# ['', 'Words', ', ', 'words', ', ', 'words', '.']
+
+re.split(r'\W*', '...words...')
+# ['', '', 'w', 'o', 'r', 'd', 's', '', '']
+
+re.split(r'(\W*)', '...words...')
+# ['', '...', '', '', 'w', '', 'o', '', 'r', '', 'd', '', 's', '...', '', '', '']
+```
+
+* `pattern.sub(replacement, string[, count=0])` 或 `re.sub(pattern, repl, string, count=0, flags=0)`
+
+将`pattern`匹配到的字符串替换成`replacement`，`replacement`可以是字符串，也可以是函数。
+
+```python
+import re
+
+re.sub('(blue|white|red)', 'colour', 'blue socks and red shoes')
+# 'colour socks and colour shoes'
+
+re.sub('(blue|white|red)', 'colour', 'blue socks and red shoes', count=1)
+# 'colour socks and red shoes'
+```
+
+下面的例子 `replacement` 是一个函数：
+
+```python
+def hexrepl(match):
+    "Return the hex string for a decimal number"
+    value = int(match.group())
+    return hex(value)
+
+p = re.compile(r'\d+')
+p.sub(hexrepl, 'Call 65490 for printing, 49152 for user code.')
+
+# 'Call 0xffd2 for printing, 0xc000 for user code.'
+```
+
+上面的例子通过一个函数把字符串中的十进制数字替换成对应的十六进制的数字。<br>
+
+使用 `sub()` 替换字符串的时候，`replacement` 字符串中可以使用 `\1` 或者 `\g<1>` 或者 `\g<name>` 来引用正则中的捕获分组或者命名分组。
+
+```python
+p = re.compile('section{ (?P<name> [^}]* ) }', re.VERBOSE)
+
+p.sub(r'subsection{\1}','section{First}')
+# 'subsection{First}'
+
+p.sub(r'subsection{\g<1>}','section{First}')
+# 'subsection{First}'
+
+p.sub(r'subsection{\g<name>}','section{First}')
+# 'subsection{First}'
+```
+
+仅当空匹配与前一个空匹配不相邻时，才会替换空匹配。:
+
+```python
+p = re.compile('x*')
+
+p.sub('-', 'abxd')
+# '-a-b--d-'
+```
+
+### 贪婪与非贪婪
+
