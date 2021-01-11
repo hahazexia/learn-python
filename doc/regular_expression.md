@@ -656,3 +656,29 @@ p.sub('-', 'abxd')
 
 ### 贪婪与非贪婪
 
+当我们在正则中使用`量词`（诸如 * + ? {m, n}）的时候，默认情况下，这些量词会尽可能地多匹配前面的 `pattern`，它们会趋向于匹配最大的长度，这就是所谓的 `贪婪`。由于`量词`的这种`贪婪`模式，有时候就获取不到我们想要的结果：
+
+```python
+import re
+
+s = '<html><head><title>Title</title>'
+len(s)
+# 32
+print(re.match('<.*>', s).span())
+# (0, 32)
+print(re.match('<.*>', s).group())
+# <html><head><title>Title</title>
+```
+
+上面的代码想要在一个html片段中匹配到一个标签，但是由于 `*` 默认是`贪婪`的，所以它将整个字符串都返回了。<br>
+
+如果我们只想匹配到第一个标签该怎么做呢？答案是使用`量词`的非贪婪模式：`*?` `+?` `??` `{m,n}?`。它们会尽可能匹配更`少`的字符。
+
+```python
+import re
+
+s = '<html><head><title>Title</title>'
+print(re.match('<.*?>', s).group())
+# <html>
+```
+
