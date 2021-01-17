@@ -4,4 +4,7 @@
 
 ### 目录
 
-- [正则表达式](doc/regular_expression.md)
+* 教程
+  - [安装和使用 python](doc/setup_usage.md)
+* 标准库
+  - [正则表达式](doc/regular_expression.md)
