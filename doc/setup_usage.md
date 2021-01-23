@@ -108,3 +108,31 @@ py hello.py
 #! /usr/bin/python3
 #! /usr/bin/python3.9
 ```
+
+## 类unix系统（使用miniconda管理python环境）
+
+各种 Linux 发行版系统还有 Mac 系统都属于类 Unix 系统，这些系统都依赖了 python，也就是说它们自带了 python 环境，并且系统自带的 python 环境不能随意卸载更改，因为系统组件依赖了固定版本的 python，如果删除或者更改，系统就会出现异常。<br>
+
+那么怎么安装指定版本的 python 呢？答案是使用 conda。Conda 是一个是为 Python 而设的开源包管理系统和环境管理系统，用于安装 Python 及相应的包（库），其实就是 Python 环境安装、运行、管理平台。而 miniconda 是 conda 的最小完整功能版本，我们只需要去[ conda 官网下载](https://docs.conda.io/en/latest/miniconda.html) miniconda 安装后就可以管理 python 环境了。<br>
+
+建议也在 windows 系统上安装 miniconda 来管理多个不同版本的 python 环境。而不要使用上文的方法。<br>
+
+```python
+conda info -e # 查看所有已创建的环境
+
+conda create -n xxx python=2.7.18 # 创建名字为 xxx python版本为 2.7.18 的新环境
+
+conda activate xxx # 使用名字为 xxx 的环境
+
+conda deactivate # 取消使用当前环境
+
+conda remove -n xxx --all # 移除名字为 xxx 的环境
+
+conda list # 列出当前使用环境安装的所有包
+
+conda list -n xxx # 列出名字为 xxx 的环境下安装的所有包
+
+conda install xxx=2.22.0 # 安装名为 xxx 的包指定版本为 2.22.0 到当前环境下
+
+conda remove xxx # 移除当前环境下名为 xxx 的包 
+```
