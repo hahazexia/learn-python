@@ -115,7 +115,7 @@ py hello.py
 
 那么怎么安装指定版本的 python 呢？答案是使用 conda。Conda 是一个是为 Python 而设的开源包管理系统和环境管理系统，用于安装 Python 及相应的包（库），其实就是 Python 环境安装、运行、管理平台。而 miniconda 是 conda 的最小完整功能版本，我们只需要去[ conda 官网下载](https://docs.conda.io/en/latest/miniconda.html) miniconda 安装后就可以管理 python 环境了。<br>
 
-建议也在 windows 系统上安装 miniconda 来管理多个不同版本的 python 环境。而不要使用上文的方法。<br>
+建议也在 windows 系统上安装 miniconda 来管理多个不同版本的 python 环境。而不要使用上文提及的改变环境变量优先级的方法。<br>
 
 ```python
 conda info -e # 查看所有已创建的环境
