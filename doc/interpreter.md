@@ -54,3 +54,7 @@ python -m http.server 8080
 * `python -V` `python --version`
 
 显示 python 版本
+
+* `python`
+
+直接进入交互模式
