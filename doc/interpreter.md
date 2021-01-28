@@ -2,7 +2,9 @@
 
 ## python 命令
 
-安装 python 后，在终端输入 `python` 命令，就会调用 python 解释器，进入交互模式中运行。
+安装 python 后，在终端输入 `python` 命令，就会调用 python 解释器，进入交互模式中运行。<br>
+
+在 windows 系统上如果安装了 py.exe 启动器，则可以使用 py 命令。
 
 ![进入交互模式](../img/interactive_mode.png)
 
@@ -58,3 +60,7 @@ python -m http.server 8080
 * `python`
 
 直接进入交互模式
+
+## 交互模式
+
+* 如果想要退出交互模式，输入 EOF （文件结束符，UNIX 中按 Ctrl-D，Windows 中按 Ctrl-Z, Enter）时终止。
