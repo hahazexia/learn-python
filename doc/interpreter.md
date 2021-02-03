@@ -70,3 +70,48 @@ python -m http.server 8080
 1. 当执行程序的时候，python 先讲代码编译成`字节码`的形式，字节码与平台无关，可以提高运行速度。如果python有写入权限，会把`字节码`保存成`.pyc`为扩展名的文件，并且存放在`__pycache__`的子目录中，这个子目录和源文件在相同路径下。如果python无法在机器上写入`字节码`，那么就在内存中生成`字节码`，程序结束时丢弃。源文件改变或者python版本的变化，都会导致重新生成`字节码`。注意，`字节码`只会针对那些被`导入的（import）`文件而生成。
 
 2. 然后将`字节码`发送给python虚拟机`（python virtual machine，简称PVM）`来执行。`PVM` 是python的运行时引擎。 
+
+## 导入和重载模块
+
+只要是 `.py` 后缀名的文件都是一个模块，导入操作本质上就是载入另一个文件。一个程序往往以多个模块文件的形式出现，其中一个模块指定为主文件，或叫作`顶层文件`，在这一层下，全是模块导入模块。<br>
+
+导入模块后，找个模块的所有代码会被运行一遍：
+
+```python
+# script.py
+
+print('123')
+
+
+>>> import script
+
+# 123
+```
+
+默认情况下，每一次导入只执行一次。如果想要在同一会话中再次运行文件，而不停止和重新启动会话，需要调用 importlib 标准库模块中的 reload 函数（imp 标准库在3.4版本后已经被移除）。
+
+```python
+import script
+from importlib import reload
+
+reload(script)
+
+# 123
+```
+
+模块中的变量会自动成为这个模块的属性：
+
+```python
+# script.py
+
+t = 'hello world'
+
+
+import script
+print(script.t)
+# hello world
+
+from script import t
+print(t)
+# hello world
+```
