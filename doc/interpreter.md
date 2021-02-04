@@ -26,6 +26,10 @@ file 是 python 脚本的绝对或相对地址。`python` 命令最常用的形�
 python hello.py
 ```
 
+* `python -i file`
+
+运行文件后进入交互模式中，这时处于顶层命名空间，可以查看变量的值，便于调试。
+
 * `python -c`
 
 `python -c` 可以在命令行中执行 python 代码，举例如下：
