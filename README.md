@@ -7,5 +7,6 @@
 * 教程
   - [安装和使用 python](doc/setup_usage.md)
   - [解释器](doc/interpreter.md)
+  - [数值和运算](doc/numbers_operation.md)
 * 标准库
   - [正则表达式](doc/regular_expression.md)
