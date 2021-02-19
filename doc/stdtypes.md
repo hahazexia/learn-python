@@ -338,7 +338,7 @@ TypeError: unsupported operand type(s) for |: 'set' and 'str'
 
 从集合中移除所有元素。
 
-注意：
+⚠️注意：
 
 1. 非运算符版本的 `update()`, `intersection_update()`, `difference_update()` 和 `symmetric_difference_update()` 方法将接受任意可迭代对象作为参数。
 
