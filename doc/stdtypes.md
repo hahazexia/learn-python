@@ -173,8 +173,37 @@ int.from_bytes([255, 0, 0], byteorder='big')
 
 ### 浮点数附加方法
 
+* `float.as_integer_ratio()`
 
+返回一个分子和分母组成的元组，其比率正好等于原浮点数并且分母为正数。 无穷大会引发 OverflowError 而 NaN 则会引发 ValueError。
 
+* `float.is_integer()`
 
+判断一个浮点数是否可以用整数来表示。
 
+```python
+(-2.0).is_integer()
+True
+
+(3.2).is_integer()
+False
+```
+
+* `float.hex()`
+
+以十六进制字符串的形式返回一个浮点数表示。 对于有限浮点数，这种表示法将总是包含前导的 `0x` 和尾随的 `p` 加指数。
+
+```python
+1.2.hex()
+'0x1.3333333333333p+0'
+```
+
+* classmethod `float.fromhex(s)`
+
+返回以十六进制字符串 s 表示的浮点数的类方法。
+
+```python
+float.fromhex('0x3.a7p10')
+3740.0
+```
 
