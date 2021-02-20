@@ -156,3 +156,109 @@ I
 
 ## 字符串方法
 
+字符串方法很多，这里只介绍一些最常用的方法，其他方法请去查阅标准库手册。<br>
+
+* 如果想要替换字符串中的子串，可以使用 replace 方法。
+
+```python
+s = 'spammy'
+s = s.replace('mm', 'xx')
+s
+'spaxxy'
+
+
+'aa$bb$cc$dd'.replace('$', 'SPAM')
+'aaSPAMbbSPAMccSPAMdd'
+
+'aa$bb$cc$dd'.replace('$', 'SPAM', 1)
+'aaSPAMbb$cc$dd'
+```
+
+* 如果需要替换可能在任意位置出现的子串，就先用 find 找到子串的位置，然后使用分片：
+
+```python
+s = 'xxxxSPAMxxxxSPAMxxxx'
+where = s.find('SPAM')
+where
+4
+
+s = s[:where] + 'EGGS' + s[(where+4):]
+```
+
+* 如果要对一个长字符串进行多处修改，可以将字符串转换成一个列表，修改结束后再调用 join 方法连接成字符串。
+
+```python
+s = 'spammy'
+l = list(s)
+l
+['s', 'p', 'a', 'm', 'm', 'y']
+
+l[3] = 'x'
+l[4] = 'x'
+l
+['s', 'p', 'a', 'x', 'x', 'y']
+
+s = ''.join(l)
+s
+'spaxxy'
+```
+
+* split 方法将一个字符串从分隔符处分割成一系列子串，生成一个列表。
+
+```python
+line = 'aaa bbb ccc'
+cols = line.split()
+cols
+['aaa', 'bbb', 'ccc']
+
+line = 'bob,hacker,40'
+line.split(',')
+['bob', 'hacker', '40']
+```
+
+* rstrip 清除末尾的空白，upper 所有字符转换成大写，isalpha 判断字符串的字符是否都是字母，endswith 是否以指定的子串结束，startswith 是否以给定的子串开始。
+
+```python
+line = 'The knights who say Ni!\n'
+line.rstrip()
+'The knights who say Ni!'
+
+line.upper()
+'THE KNIGHTS WHO SAY NI!\n'
+
+line.isalpha()
+False
+
+line.endswith('Ni!\n')
+True
+
+line.startswith('The')
+True
+```
+
+### 原始 string 模块
+
+python 最初的时候只提供一个标准库模块，名为 string。其中大部分函数相当于目前的字符串对象方法集。以为有很多人写了如此多的依赖原始 string 模块的代码，所以 string 模块被保留下来，以便向后兼容。<br>
+
+如今，你应该只使用字符串对象方法，而不是最初的 string 模块。如今字符串方法的原始模块调用形式已经从 python 3.x 中完全删除了。<br>
+
+因此，在代码中你会看到以下这两种不同的调用模式：
+
+```python
+# python 3.x
+
+s = 'a+b+c+'
+x = s.replace('+', 'spam')
+x
+'aspambspamcspam'
+
+# python 2.x
+import string
+s = 'a+b+c+'
+y = string.replace(s, '+', 'spam')
+y
+'aspambspamcspam'
+```
+
+## 字符串格式化表达式
+
