@@ -372,3 +372,131 @@ Your age is 40
 
 ## 字符串格式化方法 format
 
+字符串对象的 format 方法，它使用主体字符串作为模板，并且接受任意多个参数，表示将要根据模板替换的值。
+
+```python
+t = '{0}, {1} and {2}'
+t.format('spam', 'ham', 'eggs')
+'spam, ham and eggs'
+
+t = '{motto}, {pork} and {food}'
+t.format(motto='spam', pork='ham', food='eggs')
+'spam, ham and eggs'
+
+t = '{motto}, {0} and {food}'
+t.format('ham', motto='spam', food='eggs')
+'spam, ham and eggs'
+
+t = '{}, {} and {}'
+t.format('spam', 'ham', 'eggs')
+'spam, ham and eggs'
+```
+
+可以添加键，属性和偏移量。
+
+```python
+import sys
+'My {1[kind]} runs {0.platform}'.format(sys, {'kind': 'laptop'})
+'My laptop runs win32'
+
+'My {map[kind]} runs {sys.platform}'.format(sys=sys, map={'kind': 'laptop'})
+'My laptop runs win32'
+
+somelist = list('SPAM')
+somelist
+['S', 'P', 'A', 'M']
+'first={0[0]}, third={0[2]}'.format(somelist)
+'first=S, third=A'
+
+'first={0}, last={1}'.format(somelist[0], somelist[-1])
+'first=S, last=M'
+
+parts = somelist[0], somelist[-1], somelist[1:3]
+'first={0}, last={1}, middle={2}'.format(*parts)
+"first=S, last=M, middle=['P', 'A']"
+```
+
+format方法的主体字符串中的替换部分的语法：
+
+`{fieldname component !conversionflag :formatspec}`
+
+* fieldname 辨识参数的一个可选的数字或关键字，可以省略使用相对参数
+* component 有大于等于零个 `.name` 或 `[index]` 引用的字符串，可以省略以使用完整的参数
+* conversionflag 如果出现则以`!`开始，后面跟着 `r` `s` 或者 `a`，在这个值上分别调用 `repr` `str` 或 `ascii` 内置函数
+* formatspec 如果出现则以 `:` 开始，后面跟着文本，指定了如何表示该值，包括 字段宽度，对齐方式，补零，小数精度等细节，并且以一个可选的数据类型码结束
+
+冒号后的 formatspec 本身也有丰富的格式，如下：
+
+`[[fill]align][sign][#][0][width][,][.precision][typecode]`
+
+* `fill` 如果指定了有效的 `align`，则可以在前面加一个 `fill`，可以是任意字符，用于填充空白位，默认为空格
+* `align` 指定了对齐的规则。
+`<` 强制字段在可用空间内左对齐（大多数对象默认值）
+`>` 强制字段在可用空间内右对齐（数字默认值）
+`=` 强制将填充放在符号之后但在数字之前。用于以“+000000120”形式打印字段。此对齐选项仅对数字类型有效。
+`^` 强制字段在可用空间内居中
+* `sign` 指定了是否显示正负数的符号，只对数字类型有效
+`+` 正数显示正号
+`-` 负数显示负号
+` ` 正数前导空格，负数前用负号
+* `#` 对于整数类型，当使用二进制、八进制或十六进制输出时，此选项会为输出值分别添加相应的 '0b', '0o', or '0x' 前缀。 对于浮点数和复数类型，替代形式会使得转换结果总是包含小数点符号，即使其不带小数部分。此项仅对整数、浮点数和复数类型有效
+* `0` 当未显式给出对齐方式时，在 `width` 字段前加一个零 ('0') 字段将为数字类型启用感知正负号的零填充。 这相当于设置 `fill` 字符为 '0' 且 `align` 类型为 '='。
+* `width` 定义一个最小的字段宽度的十进制整数
+* `,` 使用逗号作为千位分隔符。
+* `.precision` `precision` 是一个十进制数字，表示对于以 'f' and 'F' 格式化的浮点数值要在小数点后显示多少个数位，或者对于以 'g' 或 'G' 格式化的浮点数值要在小数点前后共显示多少个数位。 对于非数字类型，该字段表示最大字段大小 —— 换句话说就是要使用多少个来自字段内容的字符。 对于整数值则不允许使用 `precision`。
+* `typecode` 就是之前说过的类型码
+
+下面是一些例子：
+
+```python
+'{0:10} = {1:10}'.format('spam', 123.4567)
+'spam       =   123.4567'
+
+'{0:>10} = {1:<10}'.format('spam', 123.4567)
+'      spam = 123.4567  '
+
+'{0.platform:>10} = {1[kind]:<10}'.format(sys, dict(kind='laptop')) '     win32 = laptop    '
+
+
+'{0:e}, {1:.3e}, {2:g}'.format(3.14159, 3.14159, 3.14159)
+'3.141590e+00, 3.142e+00, 3.14159'
+
+'{0:f}, {1:.2f}, {2:06.2f}'.format(3.14159, 3.14159, 3.14159)
+'3.141590, 3.14, 003.14'
+
+
+'{0:X}, {1:o}, {2:b}'.format(255, 255, 255)
+'FF, 377, 11111111'
+
+bin(255), int('11111111', 2), 0b11111111
+('0b11111111', 255, 255)
+
+hex(255), int('FF', 16), 0xFF
+('0xff', 255, 255)
+
+oct(255), int('377', 8), 0o377
+('0o377', 255, 255)
+
+
+'{0:.2f}'.format(1 / 3.0)
+'0.33'
+'%.2f' % (1 / 3.0)
+'0.33'
+
+
+'{0:.{1}f}'.format(1 / 3.0, 4)
+'0.3333'
+'%.*f' % (4, 1 / 3.0)
+'0.3333'
+
+
+'{0:.2f}'.format(1.2345)
+'1.23'
+format(1.2345, '.2f')
+'1.23'
+'%.2f' % 1.2345
+'1.23'
+```
+
+## format 方法与 % 格式化表达式比较
+
