@@ -193,7 +193,33 @@ math.sqrt(144)
 pow(144, .5)
 12.0
 ```
+<br><br>
 
 * `divmod(a, b)`
 
 执行除法，返回 a 除以 b 的 商和余数组成的元组。对于整数，结果和 `(a // b, a % b)` 一致。对于浮点数，结果是 `(q, a % b)`，q 通常是 math.floor(a / b) 但可能会比 1 小。
+
+## 与字符串有关的内置函数
+
+* `len(s)`
+
+返回对象的长度（元素个数）。实参可以是序列（如 string、bytes、tuple、list 或 range 等）或集合（如 dictionary、set 或 frozen set 等）。
+
+<br><br>
+
+* `class str(object='')` `class str(object=b'', encoding='utf-8', errors='strict')`
+
+返回 object 的字符串版本。如果没有参数返回空字符串。其他情况取决于 encoding 和 errors 参数。<br>
+
+如果 encoding 或 errors 均未给出，str(object) 返回 `object.__str__()`，这是 object 的“非正式”或格式良好的字符串表示。如果 object 没有 `__str__()` 方法，则 str() 将回退为返回 `repr(object)`。 <br>
+
+如果 encoding 或者 errors 至少给出其中之一，则 object 应该是一个 `bytes-like object`（bytes 或者 bytearray）。在此情况下，如果 object 是一个 bytes (或 bytearray) 对象，则 `str(bytes, encoding, errors)` 等价于 `bytes.decode(encoding, errors)`。
+
+
+* `chr(i)`
+
+返回 Unicode 码位为整数 i 的字符的字符串格式。例如，chr(97) 返回字符串 'a'，chr(8364) 返回字符串 '€'。这是 `ord()` 的逆函数。
+
+* `ord(c)`
+
+对表示单个 Unicode 字符的字符串，返回代表它 Unicode 码点的整数。例如 ord('a') 返回整数 97， ord('€') （欧元符号）返回 8364 。这是 chr() 的逆函数。
