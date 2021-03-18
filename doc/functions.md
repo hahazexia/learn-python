@@ -223,3 +223,15 @@ pow(144, .5)
 * `ord(c)`
 
 对表示单个 Unicode 字符的字符串，返回代表它 Unicode 码点的整数。例如 ord('a') 返回整数 97， ord('€') （欧元符号）返回 8364 。这是 chr() 的逆函数。
+
+* `format(value[, format_spec])`
+
+将模板字符串中的值替换为对应的参数。详见字符串教程。
+
+* `print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)`
+
+将 `objects` 打印到 `file` 指定的文本流，以 `sep` 分隔并在末尾加上 `end`。 `sep`, `end`, `file` 和 `flush` 如果存在，它们必须以关键字参数的形式给出。`file`参数如果不存在或为 None，则将使用 sys.stdout。
+
+* `repr(object)`
+
+返回包含一个对象的可打印表示形式的字符串。 
