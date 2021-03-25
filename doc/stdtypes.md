@@ -343,3 +343,134 @@ TypeError: unsupported operand type(s) for |: 'set' and 'str'
 1. 非运算符版本的 `update()`, `intersection_update()`, `difference_update()` 和 `symmetric_difference_update()` 方法将接受任意可迭代对象作为参数。
 
 2. `__contains__()`, `remove()` 和 `discard()` 方法的 elem 参数可能是一个 set。 为支持对一个等价的 frozenset 进行搜索，会根据 elem 临时创建一个该类型对象。
+
+## 文本序列类型 str
+
+字符串是由 Unicode 码位构成的不可变 序列。 字符串字面值不同的写法：
+
+* 单引号: '允许包含有 "双" 引号'
+* 双引号: "允许包含有 '单' 引号"
+* 三重引号: '''三重单引号''', """三重双引号"""
+
+### 字符串实例的方法
+
+* `str.capitalize()`
+
+返回原字符串的副本，其首个字符大写，其余为小写。
+
+* `str.casefold()`
+
+返回原字符串消除大小写的副本。消除大小写类似于转为小写，但是更加彻底一些，因为它会移除字符串中的所有大小写变化形式。 
+
+* `str.center(width[, fillchar])`
+
+返回长度为 width 的字符串，原字符串在其正中。 使用指定的 fillchar 填充两边的空位（默认使用 ASCII 空格符）。 如果 width 小于等于 len(s) 则返回原字符串的副本。
+
+* `str.count(sub[, start[, end]])`
+
+返回子字符串 sub 在 [start, end] 范围内非重叠出现的次数。 可选参数 start 与 end 会被解读为切片表示法。
+
+* `str.encode(encoding="utf-8", errors="strict")`
+
+返回原字符串编码为字节串对象的版本。 默认编码为 'utf-8'。 可以给出 errors 来设置不同的错误处理方案。 errors 的默认值为 'strict'，表示编码错误会引发 UnicodeError。
+
+* `str.endswith(suffix[, start[, end]])`
+
+如果字符串以指定的 suffix 结束返回 True，否则返回 False。 suffix 也可以为由多个供查找的后缀构成的元组。 如果有可选项 start，将从所指定位置开始检查。 如果有可选项 end，将在所指定位置停止比较。
+
+* `str.expandtabs(tabsize=8)`
+
+返回字符串的副本，其中所有的制表符会由一个或多个空格替换。默认 tabsize 是 8。从第 0 个字符开始计数，到第一个出现的 `\t` 制表符处为一组（如果到第 tabsize 个字符仍然没有制表符，那么这 tabsize 个字符就独自成为一组），然后不足 tabsize 个数的字符用空格来补充，直到一组字符凑齐 tabsize 个字符。
+
+* `str.find(sub[, start[, end]])`
+
+返回子字符串 sub 在 `s[start:end]` 切片内被找到的最小索引。 可选参数 start 与 end 会被解读为切片表示法。 如果 sub 未被找到则返回 -1。
+
+* `str.format(*args, **kwargs)`
+
+执行字符串格式化操作。 调用此方法的字符串可以包含字符串字面值或者以花括号 {} 括起来的替换域。 每个替换域可以包含一个位置参数的数字索引，或者一个关键字参数的名称。 返回的字符串副本中每个替换域都会被替换为对应参数的字符串值。
+
+```python
+"The sum of 1 + 2 is {0}".format(1+2)
+'The sum of 1 + 2 is 3'
+```
+
+* `str.format_map(mapping)`
+
+类似于 `str.format(**mapping)`，mapping 是映射对象，例如 字典。format_map 将字典中 key 所代表的 value 替换到 str 中的对应 key 为名字的替换域中。和 `str.format(**mapping)` 的区别在于 mapping 直接被使用，而不会被复制。
+
+* `str.index(sub[, start[, end]])`
+
+类似于 find()，但在找不到子类时会引发 ValueError。
+
+* `str.isalnum()`
+
+如果字符串中的所有字符都是字母或数字且至少有一个字符，则返回 True ， 否则返回 False 。 如果 c.isalpha() ， c.isdecimal() ， c.isdigit() ，或 c.isnumeric() 之中有一个返回 True ，则字符``c``是字母或数字。
+
+* `str.isalpha()`
+
+如果字符串中的所有字符都是字母，并且至少有一个字符，返回 True ，否则返回 False 。字母字符是指那些在 Unicode 字符数据库中定义为 "Letter" 的字符，即那些具有 "Lm"、"Lt"、"Lu"、"Ll" 或 "Lo" 之一的通用类别属性的字符。 注意，这与 Unicode 标准中定义的"字母"属性不同。
+
+* `str.isascii()`
+
+如果字符串为空或字符串中的所有字符都是 ASCII ，返回 True ，否则返回 False 。ASCII 字符的码点范围是 U+0000-U+007F 。
+
+* `str.isdecimal()`
+
+如果字符串中的所有字符都是十进制字符且该字符串至少有一个字符，则返回 True ， 否则返回 False 。十进制字符指那些可以用来组成10进制数字的字符，例如 U+0660 ，即阿拉伯字母数字0 。 严格地讲，十进制字符是 Unicode 通用类别 "Nd" 中的一个字符。
+
+* `str.isdigit()`
+
+如果字符串中的所有字符都是数字，并且至少有一个字符，返回 True ，否则返回 False 。 数字包括十进制字符和需要特殊处理的数字，如兼容性上标数字。这包括了不能用来组成 10 进制数的数字，如 Kharosthi 数。 严格地讲，数字是指属性值为 Numeric_Type=Digit 或 Numeric_Type=Decimal 的字符。
+
+* `str.isidentifier()`
+
+如果字符串是有效的标识符，返回 True ，依据语言定义， 标识符和关键字 节。
+
+调用 keyword.iskeyword() 来检测字符串 s 是否为保留标识符，例如 def 和 class。
+
+```python
+>>> from keyword import iskeyword
+
+>>> 'hello'.isidentifier(), iskeyword('hello')
+True, False
+>>> 'def'.isidentifier(), iskeyword('def')
+True, True
+```
+
+* `str.islower()`
+
+如果字符串中至少有一个区分大小写的字符 4 且此类字符均为小写则返回 True ，否则返回 False 。
+
+* `str.isnumeric()`
+
+如果字符串中至少有一个字符且所有字符均为数值字符则返回 True ，否则返回 False 。 数值字符包括数字字符，以及所有在 Unicode 中设置了数值特性属性的字符，例如 U+2155, VULGAR FRACTION ONE FIFTH。 正式的定义为：数值字符就是具有特征属性值 Numeric_Type=Digit, Numeric_Type=Decimal 或 Numeric_Type=Numeric 的字符。
+
+* `str.isprintable()`
+
+如果字符串中所有字符均为可打印字符或字符串为空则返回 True ，否则返回 False 。 不可打印字符是在 Unicode 字符数据库中被定义为 "Other" 或 "Separator" 的字符，例外情况是 ASCII 空格字符 (0x20) 被视作可打印字符。 （请注意在此语境下可打印字符是指当对一个字符串发起调用 repr() 时不必被转义的字符。 它们与字符串写入 sys.stdout 或 sys.stderr 时所需的处理无关。）
+
+* `str.isspace()`
+
+如果字符串中只有空白字符且至少有一个字符则返回 True ，否则返回 False 。
+
+空白 字符是指在 Unicode 字符数据库 (参见 unicodedata) 中主要类别为 Zs ("Separator, space") 或所属双向类为 WS, B 或 S 的字符。
+
+* `str.istitle()`
+
+如果字符串中至少有一个字符且为标题字符串则返回 True ，例如大写字符之后只能带非大写字符而小写字符必须有大写字符打头。 否则返回 False 。
+
+* `str.isupper()`
+
+如果字符串中至少有一个区分大小写的字符且此类字符均为大写则返回 True ，否则返回 False 。
+
+```python
+'BANANA'.isupper()
+True
+'banana'.isupper()
+False
+'baNana'.isupper()
+False
+' '.isupper()
+False
+```

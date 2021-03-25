@@ -10,7 +10,7 @@ python 中的字符串是不可变`序列`，字符串所包含的字符存在�
 s = '' # 空字符串
 s = "spam's" # 双引号和单引号相同
 s = 's\np\ta\x00m' # 转义字符
-s = '''...multiline...''' # 三引号字符串
+s = '''...multiline...''' # 三引号字符串 所有空白符将保留在字面量中
 s = r'\temp\spam' # 原始字符串（不转义）
 b = b'sp\xc4m' # python 2.6 2.7 和 3.x 中的字节串
 u = u'sp\u00c4m' # python 2.x 和 3.3+ 中的 unicode 字符串
