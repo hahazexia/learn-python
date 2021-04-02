@@ -474,3 +474,284 @@ False
 ' '.isupper()
 False
 ```
+
+* `str.join(iterable)`
+
+返回一个由 iterable 中的字符串拼接而成的字符串。 如果 iterable 中存在任何非字符串值包括 bytes 对象则会引发 TypeError。 调用该方法的字符串将作为元素之间的分隔。
+
+* `str.ljust(width[, fillchar])`
+
+返回长度为 width 的字符串，原字符串在其中靠左对齐。 使用指定的 fillchar 填充空位 (默认使用 ASCII 空格符)。 如果 width 小于等于 len(s) 则返回原字符串的副本。
+
+* `str.lower()`
+
+返回原字符串的副本，其所有区分大小写的字符均转换为小写。
+
+* `str.lstrip([chars])`
+
+返回原字符串的副本，移除其中的前导字符。 chars 参数为指定要移除字符的字符串。 如果省略或为 None，则 chars 参数默认移除空白符。 实际上 chars 参数并非指定单个前缀；而是会移除参数值的所有组合:
+
+```python
+'   spacious   '.lstrip()
+'spacious   '
+
+'www.example.com'.lstrip('cmowz.')
+'example.com'
+```
+
+参见 str.removeprefix() ，该方法将删除单个前缀字符串，而不是全部给定集合中的字符。 例如:
+
+```python
+'Arthur: three!'.lstrip('Arthur: ')
+'ee!'
+
+'Arthur: three!'.removeprefix('Arthur: ')
+'three!'
+```
+
+* `static str.maketrans(x[, y[, z]])`
+
+此静态方法返回一个可供 str.translate() 使用的转换对照表。
+
+如果只有一个参数，则它必须是一个将 Unicode 码位序号（整数）或字符（长度为 1 的字符串）映射到 Unicode 码位序号、（任意长度的）字符串或 None 的字典。 字符键将会被转换为码位序号。
+
+如果有两个参数，则它们必须是两个长度相等的字符串，并且在结果字典中，x 中每个字符将被映射到 y 中相同位置的字符。 如果有第三个参数，它必须是一个字符串，其中的字符将在结果中被映射到 None。
+
+* `str.partition(sep)`
+
+在 sep 首次出现的位置拆分字符串，返回一个元组，其中包含分隔符之前的部分、分隔符本身，以及分隔符之后的部分。 如果分隔符未找到，则返回的元组中包含字符本身以及两个空字符串。
+
+* `str.removeprefix(prefix, /)`
+
+如果字符串以 prefix 字符串开头，返回 string[len(prefix):] 。否则，返回原始字符串的副本：
+
+```python
+'TestHook'.removeprefix('Test')
+'Hook'
+
+'BaseTestCase'.removeprefix('Test')
+'BaseTestCase'
+```
+
+* `str.removesuffix(suffix, /)`
+
+如果字符串以 suffix 字符串结尾，并且 suffix 非空，返回 string[:-len(suffix)] 。否则，返回原始字符串的副本：
+
+```python
+'MiscTests'.removesuffix('Tests')
+'Misc'
+
+'TmpDirMixin'.removesuffix('Tests')
+'TmpDirMixin'
+```
+
+* `str.replace(old, new[, count])`
+
+返回字符串的副本，其中出现的所有子字符串 old 都将被替换为 new。 如果给出了可选参数 count，则只替换前 count 次出现。
+
+* `str.rfind(sub[, start[, end]])`
+
+返回子字符串 sub 在字符串内被找到的最大（最右）索引，这样 sub 将包含在 s[start:end] 当中。 可选参数 start 与 end 会被解读为切片表示法。 如果未找到则返回 -1。
+
+* `str.rindex(sub[, start[, end]])`
+
+类似于 rfind()，但在子字符串 sub 未找到时会引发 ValueError。
+
+* `str.rjust(width[, fillchar])`
+
+返回长度为 width 的字符串，原字符串在其中靠右对齐。 使用指定的 fillchar 填充空位 (默认使用 ASCII 空格符)。 如果 width 小于等于 len(s) 则返回原字符串的副本。
+
+* `str.rpartition(sep)`
+
+在 sep 最后一次出现的位置拆分字符串，返回一个 3 元组，其中包含分隔符之前的部分、分隔符本身，以及分隔符之后的部分。 如果分隔符未找到，则返回的 3 元组中包含两个空字符串以及字符串本身。
+
+* `str.rsplit(sep=None, maxsplit=-1)`
+
+返回一个由字符串内单词组成的列表，使用 sep 作为分隔字符串。 如果给出了 maxsplit，则最多进行 maxsplit 次拆分，从 最右边 开始。 如果 sep 未指定或为 None，任何空白字符串都会被作为分隔符。 除了从右边开始拆分，rsplit() 的其他行为都类似于下文所述的 split()。
+
+* `str.rstrip([chars])`
+
+返回原字符串的副本，移除其中的末尾字符。 chars 参数为指定要移除字符的字符串。 如果省略或为 None，则 chars 参数默认移除空白符。 实际上 chars 参数并非指定单个后缀；而是会移除参数值的所有组合:
+
+```python
+'   spacious   '.rstrip()
+'   spacious'
+
+'mississippi'.rstrip('ipz')
+'mississ'
+```
+
+要删除单个后缀字符串，而不是全部给定集合中的字符，请参见 str.removesuffix() 方法。 例如:
+
+```python
+'Monty Python'.rstrip(' Python')
+'M'
+
+'Monty Python'.removesuffix(' Python')
+'Monty'
+```
+
+* `str.split(sep=None, maxsplit=-1)`
+
+返回一个由字符串内单词组成的列表，使用 sep 作为分隔字符串。 如果给出了 maxsplit，则最多进行 maxsplit 次拆分（因此，列表最多会有 maxsplit+1 个元素）。 如果 maxsplit 未指定或为 -1，则不限制拆分次数（进行所有可能的拆分）。
+
+如果给出了 sep，则连续的分隔符不会被组合在一起而是被视为分隔空字符串 (例如 '1,,2'.split(',') 将返回 ['1', '', '2'])。 sep 参数可能由多个字符组成 (例如 '1<>2<>3'.split('<>') 将返回 ['1', '2', '3'])。 使用指定的分隔符拆分空字符串将返回 ['']。
+
+```python
+'1,2,3'.split(',')
+['1', '2', '3']
+
+'1,2,3'.split(',', maxsplit=1)
+['1', '2,3']
+
+'1,2,,3,'.split(',')
+['1', '2', '', '3', '']
+```
+
+如果 sep 未指定或为 None，则会应用另一种拆分算法：连续的空格会被视为单个分隔符，其结果将不包含开头或末尾的空字符串，如果字符串包含前缀或后缀空格的话。 因此，使用 None 拆分空字符串或仅包含空格的字符串将返回 []。
+
+```python
+'1 2 3'.split()
+['1', '2', '3']
+
+'1 2 3'.split(maxsplit=1)
+['1', '2 3']
+
+'   1   2   3   '.split()
+['1', '2', '3']
+```
+
+* `str.splitlines([keepends])`
+
+返回由原字符串中各行组成的列表，在行边界的位置拆分。 结果列表中不包含行边界，除非给出了 keepends 且为真值。
+
+此方法会以下列行边界进行拆分。 特别地，行边界是 universal newlines 的一个超集。
+
+|  行边界表示符  | 描述  |
+| ------ | ------ |
+|  \n  | 换行 |
+| \r | 回车 |
+| \r\n | 回车 + 换行 |
+| \v 或 \x0b  | 行制表符 |
+| \f 或 \x0c  | 换表单 |
+| \x1c  | 文件分隔符 |
+| \x1d  | 组分隔符 |
+| \x1e  | 记录分隔符 |
+| \x85  | 下一行 (C1 控制码) |
+| \u2028  | 行分隔符 |
+| \u2029  | 段分隔符 |
+
+
+例如:
+
+```python
+'ab c\n\nde fg\rkl\r\n'.splitlines()
+['ab c', '', 'de fg', 'kl']
+
+'ab c\n\nde fg\rkl\r\n'.splitlines(keepends=True)
+['ab c\n', '\n', 'de fg\r', 'kl\r\n']
+```
+
+不同于 split()，当给出了分隔字符串 sep 时，对于空字符串此方法将返回一个空列表，而末尾的换行不会令结果中增加额外的行:
+
+```python
+"".splitlines()
+[]
+
+"One line\n".splitlines()
+['One line']
+```
+
+作为比较，split('\n') 的结果为:
+
+```python
+''.split('\n')
+['']
+
+'Two lines\n'.split('\n')
+['Two lines', '']
+```
+
+* `str.startswith(prefix[, start[, end]])`
+
+如果字符串以指定的 prefix 开始则返回 True，否则返回 False。 prefix 也可以为由多个供查找的前缀构成的元组。 如果有可选项 start，将从所指定位置开始检查。 如果有可选项 end，将在所指定位置停止比较。
+
+* `str.strip([chars])`
+
+返回原字符串的副本，移除其中的前导和末尾字符。 chars 参数为指定要移除字符的字符串。 如果省略或为 None，则 chars 参数默认移除空白符。 实际上 chars 参数并非指定单个前缀或后缀；而是会移除参数值的所有组合:
+
+```python
+'   spacious   '.strip()
+'spacious'
+
+'www.example.com'.strip('cmowz.')
+'example'
+```
+
+最外侧的前导和末尾 chars 参数值将从字符串中移除。 开头端的字符的移除将在遇到一个未包含于 chars 所指定字符集的字符时停止。 类似的操作也将在结尾端发生。 例如:
+
+```python
+comment_string = '#....... Section 3.2.1 Issue #32 .......'
+
+comment_string.strip('.#! ')
+'Section 3.2.1 Issue #32'
+```
+
+* `str.swapcase()`
+
+返回原字符串的副本，其中大写字符转换为小写，反之亦然。 请注意 s.swapcase().swapcase() == s 并不一定为真值。
+
+* `str.title()`
+
+返回原字符串的标题版本，其中每个单词第一个字母为大写，其余字母为小写。
+
+```python
+'Hello world'.title()
+'Hello World'
+```
+
+该算法使用一种简单的与语言无关的定义，将连续的字母组合视为单词。 该定义在多数情况下都很有效，但它也意味着代表缩写形式与所有格的撇号也会成为单词边界，这可能导致不希望的结果:
+
+```python
+"they're bill's friends from the UK".title()
+"They'Re Bill'S Friends From The Uk"
+```
+
+可以使用正则表达式来构建针对撇号的特别处理:
+
+```python
+import re
+def titlecase(s):
+    return re.sub(r"[A-Za-z]+('[A-Za-z]+)?",
+                   lambda mo: mo.group(0).capitalize(),
+                   s)
+
+titlecase("they're bill's friends.")
+"They're Bill's Friends."
+```
+
+* `str.translate(table)`
+
+返回原字符串的副本，其中每个字符按给定的转换表进行映射。 转换表必须是一个使用 __getitem__() 来实现索引操作的对象，通常为 mapping 或 sequence。 当以 Unicode 码位序号（整数）为索引时，转换表对象可以做以下任何一种操作：返回 Unicode 序号或字符串，将字符映射为一个或多个字符；返回 None，将字符从结果字符串中删除；或引发 LookupError 异常，将字符映射为其自身。
+
+你可以使用 str.maketrans() 基于不同格式的字符到字符映射来创建一个转换映射表。
+
+另请参阅 codecs 模块以了解定制字符映射的更灵活方式。
+
+* `str.upper()`
+
+返回原字符串的副本，其中所有区分大小写的字符均转换为大写。 请注意如果 s 包含不区分大小写的字符或者如果结果字符的 Unicode 类别不是 "Lu" (Letter, uppercase) 而是 "Lt" (Letter, titlecase) 则 s.upper().isupper() 有可能为 False。
+
+* `str.zfill(width)`
+
+返回原字符串的副本，在左边填充 ASCII '0' 数码使其长度变为 width。 正负值前缀 ('+'/'-') 的处理方式是在正负符号 之后 填充而非在之前。 如果 width 小于等于 len(s) 则返回原字符串的副本。
+
+例如:
+
+```python
+"42".zfill(5)
+'00042'
+
+"-42".zfill(5)
+'-0042'
+```
