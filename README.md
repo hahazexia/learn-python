@@ -12,6 +12,7 @@
   - [数值和运算](doc/numbers_operation.md)
   - [动态类型](doc/dynamic_type.md)
   - [字符串](doc/string.md)
+  - [列表和字典](doc/list&dict.md)
   - [正则表达式](doc/regular_expression.md)
 * 标准库
   - [内置函数](doc/functions.md)
