@@ -111,11 +111,130 @@ L[1:2] = [4, 5] # 删除元素后插入新元素
 L
 [1, 4, 5, 3]
 
-L[1:1] = [6, 7]
+L[1:1] = [6, 7] # 插入新元素
 L
 [1, 6, 7, 4, 5, 3]
 
-L[1:2] = []
+L[1:2] = [] # 删除元素
 L
 [1, 7, 4, 5, 3]
+
+L = [1]
+L[:0] = [2, 3, 4] # 在列表头部拼接
+L
+[2, 3, 4, 1]
+
+L[len(L):] = [5, 6, 7] # 在列表尾部拼接
+L
+[2, 3, 4, 1, 5, 6, 7]
+
+L.extend([8, 9, 10]) # 在列表尾部拼接
+L
+[2, 3, 4, 1, 5, 6, 7, 8, 9, 10]
 ```
+
+* `append` 是很常用的列表方法，它将一个单项添加至列表尾部，`L.append(x)` 和 `L + [x]` 的效果类似，但是 `L.append(x)` 会修改原列表，而 `L + [x]` 会生成新的列表。
+
+```python
+L = ['eat', 'more', 'SPAM!']
+L.append('please')
+L
+['eat', 'more', 'SPAM!', 'please']
+
+L.sort()
+L
+['SPAM!', 'eat', 'more', 'please']
+```
+
+* `sort` 方法有两个参数，`reverse` 参数允许排序以降序而不是升序，`key` 参数是一个有单个参数的函数，它返回在排序中使用的值。`sort`在原位置对列表进行排序。
+
+```python
+L = ['abc', 'ABD', 'aBe']
+L.sort()
+L
+['ABD', 'aBe', 'abc']
+
+L = ['abc', 'ABD', 'aBe']
+L.sort(key=str.lower)
+L
+['abc', 'ABD', 'aBe']
+
+L = ['abc', 'ABD', 'aBe']
+L.sort(key=str.lower, reverse=True)
+L
+['aBe', 'ABD', 'abc']
+```
+
+注意：混合类型排序在 python 2.x 是行得通的，python 2.x 在不同类型之间定义了一个固定的顺序。而 python 3.x 中混合类型排序则会发生异常。<br>
+
+`append` 和 `sort`都在原位置修改列表并且没有返回值，而内置函数 `sorted` 会返回新的列表： 
+
+```python
+L = ['abc', 'ABD', 'aBe']
+sorted(L, key=str.lower, reverse=True)
+['aBe', 'ABD', 'abc']
+
+L = ['abc', 'ABD', 'aBe']
+sorted([x.lower() for x in L], reverse=True)
+['abe', 'abd', 'abc']
+```
+
+* `reverse` 原位置反转列表，`extend` 在末尾插入多个元素，`pop` 在末尾删除一个元素。`reversed`内置函数返回新的列表，但是它必须包装在一个 list 调用中，因为它返回一个迭代器。
+
+```python
+L = [1, 2]
+L.extend([3, 4, 5])
+L
+[1, 2, 3, 4, 5]
+
+L.pop()
+5
+
+L
+[1, 2, 3, 4]
+L.reverse()
+L
+[4, 3, 2, 1]
+
+list(reversed(L))
+[1, 2, 3, 4]
+```
+
+`pop` 方法也可以接收一个参数，要被删除返回的元素的偏移量（默认值是最后一个元素的偏移量，也就是-1）。`remove` 删除某元素，`insert` 插入某元素，`count` 计算某元素出现次数，`index` 查找某元素的偏移量。
+
+```python
+L = ['spam', 'eggs', 'ham']
+L.index('eggs')
+1
+
+L.insert(1, 'toast')
+L
+['spam', 'toast', 'eggs', 'ham']
+
+L.remove('eggs')
+L
+['spam', 'toast', 'ham']
+
+L.pop(1)
+'toast'
+L
+['spam', 'ham']
+
+L.count('spam')
+1
+```
+
+* `del` 语句在原位置删除某项或者某片段：
+
+```python
+L = ['spam', 'eggs', 'ham', 'toast']
+del L[0]
+L
+['eggs', 'ham', 'toast']
+
+del L[1:]
+['eggs']
+```
+
+## 字典
+
